@@ -1,0 +1,3 @@
+word = input("Podaj wyraz:\n")
+for i in range(1):
+    print(word[::-1])
