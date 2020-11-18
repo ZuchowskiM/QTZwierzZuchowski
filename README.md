@@ -9,4 +9,5 @@ Naszym założeniem jest stworzenie aplikacji do edycji zdjęć. Edytor będzie 
 - zmiany nasycenia zdjęcia
 - nałożenia na zdjęcie wybranego filtra
 - naniesienie na zdjęcie napisów
+
 Po wszystkich przeprowadzonych zmianach dostępna będzie opcja podglądu zdjęcia, a także jego zapisu.
