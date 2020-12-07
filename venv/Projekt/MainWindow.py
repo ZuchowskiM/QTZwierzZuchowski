@@ -154,6 +154,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.selectPhotoButton.clicked.connect(self.selectPhoto)
         self.resizeButton.clicked.connect(self.openResizeWindow)
         self.filtersButton.clicked.connect(self.openFiltersWindow)
         self.filters = ['dark', 'green', 'red', 'blue', 'darker']
@@ -171,6 +172,22 @@ class Ui_MainWindow(object):
         self.clearButton.setText(_translate("MainWindow", "Clear"))
         self.saveButton.setText(_translate("MainWindow", "Save"))
         self.rollButton.setText(_translate("MainWindow", "rotate"))
+
+    def selectPhoto(self):
+        file = QtWidgets.QFileDialog()
+        EE.Image = file.getOpenFileName()[0]
+
+
+        image_profile = QtGui.QImage(EE.Image)
+        scene = QtWidgets.QGraphicsScene()
+        scene.addPixmap(QtGui.QPixmap.fromImage(image_profile))
+
+
+        self.mainGraphicsView.setScene(scene)
+        self.selectPhotoButton.hide()
+        self.mainGraphicsView.show()
+
+
 
 
 
