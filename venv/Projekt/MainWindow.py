@@ -161,6 +161,7 @@ class Ui_MainWindow(object):
         self.rollButton.clicked.connect(self.rotatePhoto)
         self.filtersButton.clicked.connect(self.openFiltersWindow)
         self.saveButton.clicked.connect(self.saveImage)
+        self.clearButton.clicked.connect(self.clearPhoto)
 
         # Creating editor engine object
         self.editor = EE.EditorEngine()
@@ -211,6 +212,11 @@ class Ui_MainWindow(object):
         file = QtWidgets.QFileDialog()
         savePath =  file.getSaveFileName()[0]
         self.editor.saveImage(savePath)
+
+    def clearPhoto(self):
+        self.editor.image = self.editor.baseImage
+        self.updatePhoto()
+
 
     def rotatePhoto(self):
         self.editor.rotateImage(90);
