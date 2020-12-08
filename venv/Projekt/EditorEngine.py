@@ -5,15 +5,17 @@ class EditorEngine:
 
     baseImage = None
     image = None
+    imagePath = None
 
     def __init__(self):
         self.image = None
         self.baseImage = None
+        self.imagePath = None
 
-    def readImage(self, path):
+    def readImage(self):
         try:
-            self.baseImage = Image.open(path)
-            self.image = Image.open(path)
+            self.baseImage = Image.open(self.imagePath)
+            self.image = Image.open(self.imagePath)
         except Exception as e:
             print(e)
 
@@ -49,7 +51,7 @@ class EditorEngine:
     # end of section
 
     def rotateImage(self, degrees):
-        self.image = self.image.rotate(degrees)
+        self.image = self.image.rotate(90)
 
     def showImage(self):
         self.image.show()

@@ -9,6 +9,7 @@
 
 import Projekt.EditorEngine as EE
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PIL.ImageQt import ImageQt
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -154,9 +155,16 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        # Button connects
         self.selectPhotoButton.clicked.connect(self.selectPhoto)
         self.resizeButton.clicked.connect(self.openResizeWindow)
+        self.rollButton.clicked.connect(self.rotatePhoto)
         self.filtersButton.clicked.connect(self.openFiltersWindow)
+
+        # Creating editor engine object
+        self.editor = EE.EditorEngine()
+
+        # Filters List
         self.filters = ['dark', 'green', 'red', 'blue', 'darker']
 
 
@@ -175,19 +183,32 @@ class Ui_MainWindow(object):
 
     def selectPhoto(self):
         file = QtWidgets.QFileDialog()
-        EE.Image = file.getOpenFileName()[0]
+        self.editor.imagePath =  file.getOpenFileName()[0]
+        self.editor.readImage()
 
-
-        image_profile = QtGui.QImage(EE.Image)
+        image_profile = ImageQt(self.editor.image)
+        image_profile = image_profile.scaled(400, 400, aspectRatioMode=QtCore.Qt.KeepAspectRatio,
+                                            transformMode=QtCore.Qt.SmoothTransformation)
         scene = QtWidgets.QGraphicsScene()
         scene.addPixmap(QtGui.QPixmap.fromImage(image_profile))
-
 
         self.mainGraphicsView.setScene(scene)
         self.selectPhotoButton.hide()
         self.mainGraphicsView.show()
 
 
+    def updatePhoto(self):
+        image_profile = ImageQt(self.editor.image)
+        image_profile = image_profile.scaled(400, 400, aspectRatioMode=QtCore.Qt.KeepAspectRatio,
+                                             transformMode=QtCore.Qt.SmoothTransformation)
+        scene = QtWidgets.QGraphicsScene()
+        scene.addPixmap(QtGui.QPixmap.fromImage(image_profile))
+
+        self.mainGraphicsView.setScene(scene)
+
+    def rotatePhoto(self):
+        self.editor.rotateImage(90);
+        self.updatePhoto();
 
 
 
