@@ -181,11 +181,12 @@ class Ui_MainWindow(object):
         self.editor = EE.EditorEngine()
 
         # Filters List
-        self.filters = ['dark', 'green', 'red', 'blue', 'darker']
+        self.filters = ['Blur', 'Contour', 'Detail', 'Emboss', 'Sharpen']
 
         #Qdialog widgets
         self.editHeight = QtWidgets.QLineEdit('Height')
         self.editWidth = QtWidgets.QLineEdit('Width')
+        self.filterList = QtWidgets.QListWidget()
 
 
     def retranslateUi(self, MainWindow):
@@ -270,20 +271,43 @@ class Ui_MainWindow(object):
         # print('updated')
 
 
-
     def openFiltersWindow(self):
         dialog = QtWidgets.QDialog()
         layout = QtWidgets.QVBoxLayout()
-        list = QtWidgets.QListWidget()
+        self.filterList = QtWidgets.QListWidget()
         buttonApply = QtWidgets.QPushButton("Apply")
-        list.addItems(self.filters)
-        layout.addWidget(list)
+        buttonApply.clicked.connect(self.putFilter)
+        self.filterList.addItems(self.filters)
+        layout.addWidget(self.filterList)
         layout.addWidget(buttonApply)
         dialog.setModal(False)
         dialog.setLayout(layout)
         dialog.setWindowTitle('Filters')
         dialog.exec()
         dialog.show()
+
+
+    def putFilter(self):
+        item = self.filterList.currentItem().text()
+        #print(item)
+
+        if item == 'Blur':
+            self.editor.filterBlur()
+
+        if item == 'Contour':
+            self.editor.filterContour()
+
+        if item == 'Detail':
+            self.editor.filterDetail()
+
+        if item == 'Emboss':
+            self.editor.filterEmboss()
+
+        if item == 'Sharpen':
+            self.editor.filterSharpen()
+
+        self.updatePhoto()
+
 
 
 
