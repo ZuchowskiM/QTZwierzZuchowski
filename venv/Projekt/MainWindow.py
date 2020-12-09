@@ -169,6 +169,10 @@ class Ui_MainWindow(object):
         # Filters List
         self.filters = ['dark', 'green', 'red', 'blue', 'darker']
 
+        #Qdialog widgets
+        self.editHeight = QtWidgets.QLineEdit('Height')
+        self.editWidth = QtWidgets.QLineEdit('Width')
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -227,17 +231,29 @@ class Ui_MainWindow(object):
     def openResizeWindow(self):
         dialog = QtWidgets.QDialog()
         layout = QtWidgets.QVBoxLayout()
-        editHeight = QtWidgets.QLineEdit("Height")
-        editWidth = QtWidgets.QLineEdit("Width")
-        buttonApply = QtWidgets.QPushButton("Apply")
-        layout.addWidget(editHeight)
-        layout.addWidget(editWidth)
+        buttonApply = QtWidgets.QPushButton('Apply')
+        buttonApply.clicked.connect(self.resizePhoto)
+        self.editHeight = QtWidgets.QLineEdit('Height')
+        self.editWidth = QtWidgets.QLineEdit('Width')
+        layout.addWidget(self.editHeight)
+        layout.addWidget(self.editWidth)
         layout.addWidget(buttonApply)
         dialog.setModal(False)
         dialog.setLayout(layout)
         dialog.setWindowTitle('Resize')
         dialog.exec()
         dialog.show()
+
+
+    def resizePhoto(self):
+        newHeight = self.editHeight.text()
+        newWidth = self.editWidth.text()
+        newSize = (int(newHeight), int(newWidth))
+        self.editor.resizeImage(newSize)
+        self.updatePhoto()
+        # print('updated')
+
+
 
     def openFiltersWindow(self):
         dialog = QtWidgets.QDialog()

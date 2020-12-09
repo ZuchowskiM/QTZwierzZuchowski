@@ -19,6 +19,9 @@ class EditorEngine:
         except Exception as e:
             print(e)
 
+    def resizeImage(self, newSize):
+        self.image = self.image.resize(newSize)
+
     # Enhance section
     def changeContrast(self, value):
         en = ImageEnhance.Contrast(self.image)
