@@ -10,14 +10,14 @@ import EditorEngine as EE
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtWidgets import QSlider
+from PyQt5.QtWidgets import QSlider,QLabel
 from PIL.ImageQt import ImageQt
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(900, 650)
-        MainWindow.setStyleSheet("background-color: rgb(255, 239, 213);")
+        MainWindow.setStyleSheet("background-color: rgb(255, 239, 213)")
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -52,7 +52,6 @@ class Ui_MainWindow(object):
         self.textButton.setObjectName("textButton")
         self.menuHLay.addWidget(self.textButton)
         self.saturatioButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        #self.slider = QSlider(QtCore.Qt.Horizontal)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -61,9 +60,17 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(14)
         self.saturatioButton.setFont(font)
-        self.saturatioButton.setStyleSheet("background-color: rgb(255, 192, 203);")
+        self.saturatioButton.setStyleSheet("background-color: rgb(255, 192, 203)")
         self.saturatioButton.setObjectName("saturatioButton")
         self.menuHLay.addWidget(self.saturatioButton)
+        self.sliderSat = QSlider(Qt.Horizontal, self.centralwidget)
+        self.sliderSat.setGeometry(QtCore.QRect(160, 580, 450, 50))
+        self.sliderSat.setTickPosition(QSlider.TicksBelow)
+        self.sliderSat.setTickInterval(1)
+        # self.sliderSat.setMinimum(0)
+        # self.sliderSat.setMaximum(100)
+        self.sliderSat.setObjectName("sliderSaturation")
+        self.sliderSat.hide()
         self.contrasButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -76,6 +83,14 @@ class Ui_MainWindow(object):
         self.contrasButton.setStyleSheet("background-color: rgb(204, 255, 255);")
         self.contrasButton.setObjectName("contrasButton")
         self.menuHLay.addWidget(self.contrasButton)
+        self.sliderCon = QSlider(Qt.Horizontal, self.centralwidget)
+        self.sliderCon.setGeometry(QtCore.QRect(160, 580, 450, 50))
+        self.sliderCon.setTickPosition(QSlider.TicksBelow)
+        self.sliderCon.setTickInterval(1)
+        # self.sliderSat.setMinimum(0)
+        # self.sliderSat.setMaximum(100)
+        self.sliderCon.setObjectName("sliderSaturation")
+        self.sliderCon.hide()
         self.brigthnessButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -88,6 +103,14 @@ class Ui_MainWindow(object):
         self.brigthnessButton.setStyleSheet("background-color: rgb(188, 143, 143);")
         self.brigthnessButton.setObjectName("brigthnessButton")
         self.menuHLay.addWidget(self.brigthnessButton)
+        self.sliderBri = QSlider(Qt.Horizontal, self.centralwidget)
+        self.sliderBri.setGeometry(QtCore.QRect(160, 580, 450, 50))
+        self.sliderBri.setTickPosition(QSlider.TicksBelow)
+        self.sliderBri.setTickInterval(1)
+        # self.sliderSat.setMinimum(0)
+        # self.sliderSat.setMaximum(100)
+        self.sliderBri.setObjectName("sliderSaturation")
+        self.sliderBri.hide()
         self.filtersButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -163,9 +186,9 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
         # Button connects
         self.selectPhotoButton.clicked.connect(self.selectPhoto)
@@ -174,6 +197,9 @@ class Ui_MainWindow(object):
         self.filtersButton.clicked.connect(self.openFiltersWindow)
         self.saveButton.clicked.connect(self.saveImage)
         self.clearButton.clicked.connect(self.clearPhoto)
+        self.saturatioButton.clicked.connect(self.saturationSlider)
+        self.contrasButton.clicked.connect(self.contrastSlider)
+        self.brigthnessButton.clicked.connect(self.brightnessSlider)
 
 
 
@@ -187,6 +213,7 @@ class Ui_MainWindow(object):
         self.editHeight = QtWidgets.QLineEdit('Height')
         self.editWidth = QtWidgets.QLineEdit('Width')
         self.filterList = QtWidgets.QListWidget()
+
 
 
     def retranslateUi(self, MainWindow):
@@ -235,16 +262,25 @@ class Ui_MainWindow(object):
         self.editor.saveImage(savePath)
 
     def clearPhoto(self):
+        self.sliderCon.hide()
+        self.sliderSat.hide()
+        self.sliderBri.hide()
         self.editor.image = self.editor.baseImage
         self.updatePhoto()
 
 
     def rotatePhoto(self):
+        self.sliderCon.hide()
+        self.sliderSat.hide()
+        self.sliderBri.hide()
         self.editor.rotateImage(90)
         self.updatePhoto()
 
 
     def openResizeWindow(self):
+        self.sliderCon.hide()
+        self.sliderSat.hide()
+        self.sliderBri.hide()
         dialog = QtWidgets.QDialog()
         dialog.setFixedSize(300, 200)
         layout = QtWidgets.QVBoxLayout()
@@ -272,6 +308,9 @@ class Ui_MainWindow(object):
 
 
     def openFiltersWindow(self):
+        self.sliderCon.hide()
+        self.sliderSat.hide()
+        self.sliderBri.hide()
         dialog = QtWidgets.QDialog()
         layout = QtWidgets.QVBoxLayout()
         self.filterList = QtWidgets.QListWidget()
@@ -307,6 +346,21 @@ class Ui_MainWindow(object):
             self.editor.filterSharpen()
 
         self.updatePhoto()
+
+    def saturationSlider(self):
+        self.sliderCon.hide()
+        self.sliderBri.hide()
+        self.sliderSat.show()
+
+    def contrastSlider(self):
+        self.sliderSat.hide()
+        self.sliderBri.hide()
+        self.sliderCon.show()
+
+    def brightnessSlider(self):
+        self.sliderSat.hide()
+        self.sliderCon.hide()
+        self.sliderBri.show()
 
 
 
