@@ -201,7 +201,16 @@ class Ui_MainWindow(object):
         self.contrasButton.clicked.connect(self.contrastSlider)
         self.brigthnessButton.clicked.connect(self.brightnessSlider)
 
-
+        # Button locking
+        self.resizeButton.setEnabled(False)
+        self.textButton.setEnabled(False)
+        self.saturatioButton.setEnabled(False)
+        self.contrasButton.setEnabled(False)
+        self.brigthnessButton.setEnabled(False)
+        self.filtersButton.setEnabled(False)
+        self.rollButton.setEnabled(False)
+        self.clearButton.setEnabled(False)
+        self.saveButton.setEnabled(False)
 
         # Creating editor engine object
         self.editor = EE.EditorEngine()
@@ -234,18 +243,33 @@ class Ui_MainWindow(object):
     def selectPhoto(self):
         file = QtWidgets.QFileDialog()
         self.editor.imagePath = file.getOpenFileName()[0]
-        self.editor.readImage()
+        try:
+            self.editor.readImage()
 
-        image_profile = ImageQt(self.editor.image)
-        image_profile = image_profile.scaled(400, 400, aspectRatioMode=QtCore.Qt.KeepAspectRatio,
+            image_profile = ImageQt(self.editor.image)
+            image_profile = image_profile.scaled(400, 400, aspectRatioMode=QtCore.Qt.KeepAspectRatio,
                                             transformMode=QtCore.Qt.SmoothTransformation)
-        scene = QtWidgets.QGraphicsScene()
-        scene.addPixmap(QtGui.QPixmap.fromImage(image_profile))
+            scene = QtWidgets.QGraphicsScene()
+            scene.addPixmap(QtGui.QPixmap.fromImage(image_profile))
 
-        self.mainGraphicsView.setScene(scene)
-        self.selectPhotoButton.hide()
-        self.mainGraphicsView.show()
+            self.mainGraphicsView.setScene(scene)
+            self.selectPhotoButton.hide()
+            self.mainGraphicsView.show()
+            self.unlockButtons()
+        except Exception as e:
+            print(e)
 
+
+    def unlockButtons(self):
+        self.resizeButton.setEnabled(True)
+        self.textButton.setEnabled(True)
+        self.saturatioButton.setEnabled(True)
+        self.contrasButton.setEnabled(True)
+        self.brigthnessButton.setEnabled(True)
+        self.filtersButton.setEnabled(True)
+        self.rollButton.setEnabled(True)
+        self.clearButton.setEnabled(True)
+        self.saveButton.setEnabled(True)
 
     def updatePhoto(self):
         image_profile = ImageQt(self.editor.image)

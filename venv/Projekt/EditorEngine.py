@@ -18,6 +18,7 @@ class EditorEngine:
             self.image = Image.open(self.imagePath)
         except Exception as e:
             print(e)
+            raise Exception('Error reading photo')
 
     def resizeImage(self, newSize):
         self.image = self.image.resize(newSize)
