@@ -10,7 +10,7 @@ import EditorEngine as EE
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtWidgets import QSlider,QLabel
+from PyQt5.QtWidgets import QSlider, QLabel,QMessageBox
 from PIL.ImageQt import ImageQt
 
 class Ui_MainWindow(object):
@@ -18,7 +18,6 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(900, 650)
         MainWindow.setStyleSheet("background-color: rgb(255, 239, 213)")
-
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -67,8 +66,6 @@ class Ui_MainWindow(object):
         self.sliderSat.setGeometry(QtCore.QRect(160, 580, 450, 50))
         self.sliderSat.setTickPosition(QSlider.TicksBelow)
         self.sliderSat.setTickInterval(1)
-        # self.sliderSat.setMinimum(0)
-        # self.sliderSat.setMaximum(100)
         self.sliderSat.setObjectName("sliderSaturation")
         self.sliderSat.hide()
         self.contrasButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -87,8 +84,6 @@ class Ui_MainWindow(object):
         self.sliderCon.setGeometry(QtCore.QRect(160, 580, 450, 50))
         self.sliderCon.setTickPosition(QSlider.TicksBelow)
         self.sliderCon.setTickInterval(1)
-        # self.sliderSat.setMinimum(0)
-        # self.sliderSat.setMaximum(100)
         self.sliderCon.setObjectName("sliderContrast")
         self.sliderCon.hide()
         self.brigthnessButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -107,8 +102,6 @@ class Ui_MainWindow(object):
         self.sliderBri.setGeometry(QtCore.QRect(160, 580, 450, 50))
         self.sliderBri.setTickPosition(QSlider.TicksBelow)
         self.sliderBri.setTickInterval(1)
-        # self.sliderSat.setMinimum(0)
-        # self.sliderSat.setMaximum(100)
         self.sliderBri.setObjectName("sliderBrigthness")
         self.sliderBri.hide()
         self.filtersButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -310,6 +303,8 @@ class Ui_MainWindow(object):
         layout = QtWidgets.QVBoxLayout()
         buttonApply = QtWidgets.QPushButton('Apply')
         buttonApply.clicked.connect(self.resizePhoto)
+        buttonApply.clicked.connect(dialog.close)
+        buttonApply.setStyleSheet("background-color: rgb(255,255,255)")
         self.editHeight = QtWidgets.QLineEdit()
         self.editHeight.setPlaceholderText('Height')
         self.editWidth = QtWidgets.QLineEdit()
@@ -320,17 +315,17 @@ class Ui_MainWindow(object):
         dialog.setModal(False)
         dialog.setLayout(layout)
         dialog.setWindowTitle('Resize')
+        dialog.setStyleSheet("background-color: rgb(218, 247, 166 )")
         dialog.exec()
         dialog.show()
 
 
     def resizePhoto(self):
-        newHeight = self.editHeight.text()
-        newWidth = self.editWidth.text()
-        newSize = (int(newHeight), int(newWidth))
-        self.editor.resizeImage(newSize)
-        self.updatePhoto()
-        # print('updated')
+         newHeight = self.editHeight.text()
+         newWidth = self.editWidth.text()
+         newSize = (int(newHeight), int(newWidth))
+         self.editor.resizeImage(newSize)
+         self.updatePhoto()
 
 
     def openFiltersWindow(self):
@@ -341,13 +336,16 @@ class Ui_MainWindow(object):
         layout = QtWidgets.QVBoxLayout()
         self.filterList = QtWidgets.QListWidget()
         buttonApply = QtWidgets.QPushButton("Apply")
+        buttonApply.setStyleSheet("background-color: rgb(255,255,255)")
         buttonApply.clicked.connect(self.putFilter)
+        buttonApply.clicked.connect(dialog.close)
         self.filterList.addItems(self.filters)
         layout.addWidget(self.filterList)
         layout.addWidget(buttonApply)
         dialog.setModal(False)
         dialog.setLayout(layout)
         dialog.setWindowTitle('Filters')
+        dialog.setStyleSheet("background-color: rgb(230, 230, 250)")
         dialog.exec()
         dialog.show()
 
@@ -372,6 +370,9 @@ class Ui_MainWindow(object):
             self.editor.filterSharpen()
 
         self.updatePhoto()
+
+
+
 
     def saturationSlider(self):
         self.sliderCon.hide()
