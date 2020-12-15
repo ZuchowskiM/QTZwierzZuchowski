@@ -186,6 +186,7 @@ class Ui_MainWindow(object):
         # Button connects
         self.selectPhotoButton.clicked.connect(self.selectPhoto)
         self.resizeButton.clicked.connect(self.openResizeWindow)
+        self.textButton.clicked.connect(self.openTextWindow)
         self.rollButton.clicked.connect(self.rotatePhoto)
         self.filtersButton.clicked.connect(self.openFiltersWindow)
         self.saveButton.clicked.connect(self.saveImage)
@@ -215,6 +216,9 @@ class Ui_MainWindow(object):
         self.editHeight = QtWidgets.QLineEdit('Height')
         self.editWidth = QtWidgets.QLineEdit('Width')
         self.filterList = QtWidgets.QListWidget()
+        self.textEdit = QtWidgets.QLineEdit()
+        self.editFontSize = QtWidgets.QLineEdit()
+        self.checkFontColor = QtWidgets.QCheckBox()
 
 
 
@@ -340,6 +344,58 @@ class Ui_MainWindow(object):
             self.updatePhoto()
          except Exception as e:
              print(e)
+
+
+    def openTextWindow(self):
+        self.sliderCon.hide()
+        self.sliderSat.hide()
+        self.sliderBri.hide()
+        dialog = QtWidgets.QDialog()
+        dialog.setFixedSize(300, 200)
+        font = QtGui.QFont()
+        font.setFamily("Liberation Sans")
+        font.setPointSize(10)
+        dialog.setFont(font)
+        layout = QtWidgets.QVBoxLayout()
+        buttonApply = QtWidgets.QPushButton('Apply')
+        buttonApply.setFont(font)
+        buttonApply.clicked.connect(self.placeText)
+        buttonApply.clicked.connect(dialog.close)
+        buttonApply.setStyleSheet("background-color: rgb(255,255,255)")
+        self.textEdit = QtWidgets.QLineEdit()
+        self.textEdit.setPlaceholderText('Text')
+        self.editFontSize = QtWidgets.QLineEdit()
+        self.editFontSize.setPlaceholderText('Font size, for ex."5"')
+        self.checkFontColor = QtWidgets.QCheckBox()
+        self.checkFontColor.setText('White Color?')
+        layout.addWidget(self.textEdit)
+        layout.addWidget(self.editFontSize)
+        layout.addWidget(self.checkFontColor)
+        layout.addWidget(buttonApply)
+        dialog.setModal(False)
+        dialog.setLayout(layout)
+        dialog.setWindowTitle('Text')
+        dialog.setStyleSheet("background-color: rgb(218, 247, 166 )")
+        dialog.exec()
+        dialog.show()
+
+
+    def placeText(self):
+        try:
+            if self.checkFontColor.isChecked() is True:
+                color='white'
+            else:
+                color='black'
+
+            if self.editFontSize.text()=='':
+                self.editor.placeText(self.textEdit.text(), color)
+            else:
+                sizeFont = int(self.editFontSize.text())
+                self.editor.placeText(self.textEdit.text(),color,sizeFont)
+
+            self.updatePhoto()
+        except Exception as e:
+            print(e)
 
 
     def openFiltersWindow(self):

@@ -1,4 +1,4 @@
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image, ImageFilter, ImageEnhance, ImageFont, ImageDraw
 
 
 class EditorEngine:
@@ -56,6 +56,21 @@ class EditorEngine:
 
     def rotateImage(self, degrees):
         self.image = self.image.rotate(90)
+
+    def placeText(self, text , color='black', fontSize=40):
+        if color=='black':
+            textFill = (0,0,0,255)
+        if color=='white':
+            textFill = (255,255,255,255)
+
+        textHolder = Image.new('RGBA', self.image.size, (255,255,255,0))
+        font = ImageFont.truetype("FreeMono.ttf", fontSize)
+        drawContext = ImageDraw.Draw(textHolder)
+        width, height = self.image.size
+        drawContext.text((10,height - 50), text, font=font, fill=textFill)
+        self.image = self.image.convert('RGBA')
+        self.image = Image.alpha_composite(self.image,textHolder)
+        self.image = self.image.convert('RGB')
 
     def showImage(self):
         self.image.show()
