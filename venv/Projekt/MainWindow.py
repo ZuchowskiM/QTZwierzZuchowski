@@ -224,7 +224,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Image Editor"))
         self.resizeButton.setText(_translate("MainWindow", "Resize"))
         self.textButton.setText(_translate("MainWindow", "Text"))
         self.saturatioButton.setText(_translate("MainWindow", "Saturation"))
@@ -303,6 +303,7 @@ class Ui_MainWindow(object):
         self.sliderSat.hide()
         self.sliderBri.hide()
         dialog = QtWidgets.QDialog()
+        dialog.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         dialog.setFixedSize(300, 200)
         font = QtGui.QFont()
         font.setFamily("Liberation Sans")
@@ -351,6 +352,7 @@ class Ui_MainWindow(object):
         self.sliderSat.hide()
         self.sliderBri.hide()
         dialog = QtWidgets.QDialog()
+        dialog.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         dialog.setFixedSize(300, 200)
         font = QtGui.QFont()
         font.setFamily("Liberation Sans")
@@ -403,6 +405,7 @@ class Ui_MainWindow(object):
         self.sliderSat.hide()
         self.sliderBri.hide()
         dialog = QtWidgets.QDialog()
+        dialog.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         dialog.setFixedSize(300,200)
         font = QtGui.QFont()
         font.setFamily("Liberation Sans")
