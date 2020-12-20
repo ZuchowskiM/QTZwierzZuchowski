@@ -21,14 +21,14 @@ class EditorEngine:
             raise Exception('Error reading photo')
 
     def resizeImage(self, newSize):
-        self.image = self.image.resize(newSize)
+         self.image = self.image.resize(newSize)
 
     # Enhance section
     def changeContrast(self, value):
         en = ImageEnhance.Contrast(self.image)
         self.image = en.enhance(value)
 
-    def changeColor(self, value):
+    def changeSaturation(self, value):
         en = ImageEnhance.Color(self.image)
         self.image = en.enhance(value)
 
@@ -57,7 +57,7 @@ class EditorEngine:
     def rotateImage(self, degrees):
         self.image = self.image.rotate(90)
 
-    def placeText(self, text , color='black', fontSize=40):
+    def placeText(self, text, color='black', fontSize=40):
         if color=='black':
             textFill = (0,0,0,255)
         if color=='white':
