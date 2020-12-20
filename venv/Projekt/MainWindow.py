@@ -10,13 +10,14 @@ import EditorEngine as EE
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtWidgets import QSlider, QLabel,QMessageBox
+from PyQt5.QtWidgets import QSlider, QLabel, QMessageBox, QVBoxLayout
 from PIL.ImageQt import ImageQt
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(900, 650)
+        MainWindow.setWindowIcon(QtGui.QIcon("logo.png"))
         MainWindow.setStyleSheet("background-color: rgb(255, 239, 213)")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -65,7 +66,11 @@ class Ui_MainWindow(object):
         self.sliderSat = QSlider(Qt.Horizontal, self.centralwidget)
         self.sliderSat.setGeometry(QtCore.QRect(160, 580, 450, 50))
         self.sliderSat.setTickPosition(QSlider.TicksBelow)
-        self.sliderSat.setTickInterval(1)
+        self.sliderSat.setValue(0)
+        self.sliderSat.setMaximum(100)
+        self.sliderSat.setMinimum(-100)
+        self.sliderSat.setTickInterval(0)
+        self.sliderSat.setSingleStep(0)
         self.sliderSat.setObjectName("sliderSaturation")
         self.sliderSat.hide()
         self.contrasButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -83,7 +88,11 @@ class Ui_MainWindow(object):
         self.sliderCon = QSlider(Qt.Horizontal, self.centralwidget)
         self.sliderCon.setGeometry(QtCore.QRect(160, 580, 450, 50))
         self.sliderCon.setTickPosition(QSlider.TicksBelow)
-        self.sliderCon.setTickInterval(1)
+        self.sliderCon.setValue(0)
+        self.sliderCon.setMinimum(-100)
+        self.sliderCon.setMaximum(100)
+        self.sliderCon.setTickInterval(0)
+        self.sliderCon.setSingleStep(0)
         self.sliderCon.setObjectName("sliderContrast")
         self.sliderCon.hide()
         self.brigthnessButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -101,7 +110,11 @@ class Ui_MainWindow(object):
         self.sliderBri = QSlider(Qt.Horizontal, self.centralwidget)
         self.sliderBri.setGeometry(QtCore.QRect(160, 580, 450, 50))
         self.sliderBri.setTickPosition(QSlider.TicksBelow)
-        self.sliderBri.setTickInterval(1)
+        self.sliderBri.setValue(0)
+        self.sliderBri.setMinimum(-100)
+        self.sliderBri.setMaximum(100)
+        self.sliderBri.setTickInterval(0)
+        self.sliderBri.setSingleStep(0)
         self.sliderBri.setObjectName("sliderBrigthness")
         self.sliderBri.hide()
         self.filtersButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -283,9 +296,9 @@ class Ui_MainWindow(object):
         self.editor.saveImage(savePath)
 
     def clearPhoto(self):
-        self.sliderCon.hide()
-        self.sliderSat.hide()
-        self.sliderBri.hide()
+        self.sliderSat.setValue(0)
+        self.sliderBri.setValue(0)
+        self.sliderCon.setValue(0)
         self.editor.image = self.editor.baseImage
         self.updatePhoto()
 
@@ -303,7 +316,8 @@ class Ui_MainWindow(object):
         self.sliderSat.hide()
         self.sliderBri.hide()
         dialog = QtWidgets.QDialog()
-        dialog.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+        dialog.setWindowFlags(Qt.WindowCloseButtonHint)
+        dialog.setWindowIcon(QtGui.QIcon("resize.png"))
         dialog.setFixedSize(300, 200)
         font = QtGui.QFont()
         font.setFamily("Liberation Sans")
@@ -343,16 +357,29 @@ class Ui_MainWindow(object):
             newSize = (int(newHeight), int(newWidth))
             self.editor.resizeImage(newSize)
             self.updatePhoto()
-         except Exception as e:
-             print(e)
+         except Exception:
+             self.Error()
 
+    def Error(self):
+        error = QtWidgets.QMessageBox()
+        error.setWindowTitle('Error')
+        error.setWindowIcon(QtGui.QIcon("error.png"))
+        font = QtGui.QFont()
+        font.setFamily("Liberation Sans")
+        font.setPointSize(10)
+        error.setText('Wrong\n  type!')
+        error.setFont(font)
+        error.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        error.exec()
+        self.openResizeWindow()
 
     def openTextWindow(self):
         self.sliderCon.hide()
         self.sliderSat.hide()
         self.sliderBri.hide()
         dialog = QtWidgets.QDialog()
-        dialog.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+        dialog.setWindowIcon(QtGui.QIcon("font.png"))
+        dialog.setWindowFlags(Qt.WindowCloseButtonHint)
         dialog.setFixedSize(300, 200)
         font = QtGui.QFont()
         font.setFamily("Liberation Sans")
@@ -377,7 +404,7 @@ class Ui_MainWindow(object):
         dialog.setModal(False)
         dialog.setLayout(layout)
         dialog.setWindowTitle('Text')
-        dialog.setStyleSheet("background-color: rgb(218, 247, 166 )")
+        dialog.setStyleSheet("background-color: rgb(237, 187, 153 )")
         dialog.exec()
         dialog.show()
 
@@ -385,11 +412,11 @@ class Ui_MainWindow(object):
     def placeText(self):
         try:
             if self.checkFontColor.isChecked() is True:
-                color='white'
+                color = 'white'
             else:
-                color='black'
+                color = 'black'
 
-            if self.editFontSize.text()=='':
+            if self.editFontSize.text() == '':
                 self.editor.placeText(self.textEdit.text(), color)
             else:
                 sizeFont = int(self.editFontSize.text())
@@ -405,8 +432,9 @@ class Ui_MainWindow(object):
         self.sliderSat.hide()
         self.sliderBri.hide()
         dialog = QtWidgets.QDialog()
-        dialog.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowTitleHint)
-        dialog.setFixedSize(300,200)
+        dialog.setWindowIcon(QtGui.QIcon("filters.png"))
+        dialog.setWindowFlags(Qt.WindowCloseButtonHint)
+        dialog.setFixedSize(300, 200)
         font = QtGui.QFont()
         font.setFamily("Liberation Sans")
         font.setPointSize(10)
@@ -453,21 +481,24 @@ class Ui_MainWindow(object):
         self.updatePhoto()
 
 
-
-
     def saturationSlider(self):
         self.sliderCon.hide()
         self.sliderBri.hide()
+        self.sliderSat.setValue(0)
         self.sliderSat.show()
+
+
 
     def contrastSlider(self):
         self.sliderSat.hide()
         self.sliderBri.hide()
+        self.sliderCon.setValue(0)
         self.sliderCon.show()
 
     def brightnessSlider(self):
         self.sliderSat.hide()
         self.sliderCon.hide()
+        self.sliderBri.setValue(0)
         self.sliderBri.show()
 
 
