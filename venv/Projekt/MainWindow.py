@@ -71,6 +71,7 @@ class Ui_MainWindow(object):
         self.sliderSat.setMinimum(-100)
         self.sliderSat.setTickInterval(0)
         self.sliderSat.setSingleStep(0)
+        self.sliderSat.valueChanged.connect(self.Saturation)
         self.sliderSat.setObjectName("sliderSaturation")
         self.sliderSat.hide()
         self.contrasButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -93,6 +94,7 @@ class Ui_MainWindow(object):
         self.sliderCon.setMaximum(100)
         self.sliderCon.setTickInterval(0)
         self.sliderCon.setSingleStep(0)
+        self.sliderCon.valueChanged.connect(self.Contrast)
         self.sliderCon.setObjectName("sliderContrast")
         self.sliderCon.hide()
         self.brigthnessButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -115,6 +117,7 @@ class Ui_MainWindow(object):
         self.sliderBri.setMaximum(100)
         self.sliderBri.setTickInterval(0)
         self.sliderBri.setSingleStep(0)
+        self.sliderBri.valueChanged.connect(self.Brightness)
         self.sliderBri.setObjectName("sliderBrigthness")
         self.sliderBri.hide()
         self.filtersButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
@@ -480,13 +483,26 @@ class Ui_MainWindow(object):
 
         self.updatePhoto()
 
+    def Saturation(self):
+        size = self.sliderSat.value()
+        self.editor.changeSaturation(size)
+        self.updatePhoto()
+
+    def Contrast(self):
+        size = self.sliderCon.value()
+        self.editor.changeContrast(size)
+        self.updatePhoto()
+
+    def Brightness(self):
+        size = self.sliderBri.value()
+        self.editor.changeBrightness(size)
+        self.updatePhoto()
 
     def saturationSlider(self):
         self.sliderCon.hide()
         self.sliderBri.hide()
         self.sliderSat.setValue(0)
         self.sliderSat.show()
-
 
 
     def contrastSlider(self):
