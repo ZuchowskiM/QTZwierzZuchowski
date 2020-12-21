@@ -255,7 +255,7 @@ class Ui_MainWindow(object):
 
     def selectPhoto(self):
         file = QtWidgets.QFileDialog()
-        self.editor.imagePath = file.getOpenFileName()[0]
+        self.editor.imagePath = file.getOpenFileName(filter="JPG (*.jpg)")[0]
         try:
             self.editor.readImage()
 
@@ -357,7 +357,7 @@ class Ui_MainWindow(object):
          newHeight = self.editHeight.text()
          newWidth = self.editWidth.text()
          try:
-            newSize = (int(newHeight), int(newWidth))
+            newSize = (int(newWidth), int(newHeight))
             self.editor.resizeImage(newSize)
             self.updatePhoto()
          except Exception:
