@@ -55,7 +55,15 @@ class EditorEngine:
     # end of section
 
     def rotateImage(self, degrees):
+        sizeW, sizeH = self.image.size
+        if(sizeH>sizeW):
+            newSize = (sizeH,sizeH)
+        else:
+            newSize = (sizeW,sizeW)
+
+        self.image = self.image.resize(newSize)
         self.image = self.image.rotate(90)
+        self.image = self.image.resize((sizeH,sizeW))
 
     def placeText(self, text, color='black', fontSize=40):
         if color=='black':
