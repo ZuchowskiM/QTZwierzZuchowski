@@ -452,6 +452,7 @@ class Ui_MainWindow(object):
         buttonApply.clicked.connect(self.putFilter)
         buttonApply.clicked.connect(dialog.close)
         self.filterList.addItems(self.filters)
+        self.filterList.setCurrentItem(self.filterList.item(0))
         layout.addWidget(self.filterList)
         layout.addWidget(buttonApply)
         dialog.setModal(False)
