@@ -65,13 +65,13 @@ class Ui_MainWindow(object):
         self.menuHLay.addWidget(self.saturatioButton)
         self.sliderSat = QSlider(Qt.Horizontal, self.centralwidget)
         self.sliderSat.setGeometry(QtCore.QRect(160, 580, 450, 50))
-        self.sliderSat.setTickPosition(QSlider.TicksBelow)
-        self.sliderSat.setValue(0)
+        self.sliderSat.setTickPosition(QSlider.NoTicks)
+        self.sliderSat.setValue(1)
         #self.sliderSat.setMaximum(5)
         #self.sliderSat.setMinimum(-5)
         self.sliderSat.setRange(-20, 20)
         #self.sliderSat.setTickInterval(1)
-        self.sliderSat.setSingleStep(1)
+        #self.sliderSat.setSingleStep(1)
         self.sliderSat.valueChanged.connect(self.Saturation)
         self.sliderSat.setObjectName("sliderSaturation")
         self.sliderSat.hide()
@@ -89,13 +89,13 @@ class Ui_MainWindow(object):
         self.menuHLay.addWidget(self.contrasButton)
         self.sliderCon = QSlider(Qt.Horizontal, self.centralwidget)
         self.sliderCon.setGeometry(QtCore.QRect(160, 580, 450, 50))
-        self.sliderCon.setTickPosition(QSlider.TicksBelow)
-        self.sliderCon.setValue(0)
+        self.sliderCon.setTickPosition(QSlider.NoTicks)
+        self.sliderCon.setValue(1)
         #self.sliderCon.setMinimum(-5)
         #self.sliderCon.setMaximum(5)
         #self.sliderCon.setTickInterval(1)
         self.sliderCon.setRange(-20, 20)
-        self.sliderCon.setSingleStep(1)
+        #self.sliderCon.setSingleStep(1)
         self.sliderCon.valueChanged.connect(self.Contrast)
         self.sliderCon.setObjectName("sliderContrast")
         self.sliderCon.hide()
@@ -113,14 +113,14 @@ class Ui_MainWindow(object):
         self.menuHLay.addWidget(self.brigthnessButton)
         self.sliderBri = QSlider(Qt.Horizontal, self.centralwidget)
         self.sliderBri.setGeometry(QtCore.QRect(160, 580, 450, 50))
-        self.sliderBri.setTickPosition(QSlider.TicksBelow)
+        self.sliderBri.setTickPosition(QSlider.NoTicks)
         #self.sliderBri.setMinimum(0)
         #self.sliderBri.setMaximum(5)
         #self.sliderBri.setTickInterval(1)
         #self.sliderBri.setRange(0., 5)
-        self.sliderBri.setSingleStep(1)
-        self.sliderBri.setRange(0, 10)
-        self.sliderBri.setValue(5)
+        #self.sliderBri.setSingleStep(1)
+        self.sliderBri.setRange(0, 20)
+        self.sliderBri.setValue(10)
         #self.sliderBri.setSliderPosition()
         self.sliderBri.valueChanged.connect(self.Brightness)
         self.sliderBri.setObjectName("sliderBrigthness")
@@ -304,14 +304,17 @@ class Ui_MainWindow(object):
         self.editor.saveImage(savePath)
 
     def clearPhoto(self):
-        self.sliderSat.setValue(0)
-        self.sliderBri.setValue(5)
-        self.sliderCon.setValue(0)
+        self.sliderSat.setValue(1)
+        self.sliderBri.setValue(10)
+        self.sliderCon.setValue(1)
         self.editor.image = self.editor.baseImage
         self.updatePhoto()
 
 
     def rotatePhoto(self):
+        self.sliderCon.hide()
+        self.sliderSat.hide()
+        self.sliderBri.hide()
         self.editor.rotateImage(90)
         self.updatePhoto()
 
@@ -487,17 +490,17 @@ class Ui_MainWindow(object):
         self.updatePhoto()
 
     def Saturation(self):
-        size = float(self.sliderSat.value()) / 2
+        size = float(self.sliderSat.value()) / 10 + 1
         self.editor.changeSaturation(size)
         self.updatePhoto()
 
     def Contrast(self):
-        size = float(self.sliderCon.value()) / 3
+        size = float(self.sliderCon.value()) / 10 + 1
         self.editor.changeContrast(size)
         self.updatePhoto()
 
     def Brightness(self):
-        size = float(self.sliderBri.value()) / 2
+        size = float(self.sliderBri.value()) / 10
         print(size)
         self.editor.changeBrightness(size)
         self.updatePhoto()
@@ -505,23 +508,24 @@ class Ui_MainWindow(object):
     def saturationSlider(self):
         self.sliderCon.hide()
         self.sliderBri.hide()
-        self.sliderSat.setValue(0)
+        self.sliderSat.setValue(1)
+        self.editor.saveTempImage()
         self.sliderSat.show()
 
 
     def contrastSlider(self):
         self.sliderSat.hide()
         self.sliderBri.hide()
-        self.sliderCon.setValue(0)
+        self.sliderCon.setValue(1)
         self.editor.saveTempImage()
         self.sliderCon.show()
 
     def brightnessSlider(self):
         self.sliderSat.hide()
         self.sliderCon.hide()
-        self.sliderBri.setValue(5)
+        self.sliderBri.setValue(10)
+        self.editor.saveTempImage()
         self.sliderBri.show()
-
 
 
 

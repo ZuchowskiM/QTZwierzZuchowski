@@ -32,12 +32,13 @@ class EditorEngine:
         en = ImageEnhance.Contrast(self.imageTemp)
         self.image = en.enhance(value)
 
+
     def changeSaturation(self, value):
-        en = ImageEnhance.Color(self.image)
+        en = ImageEnhance.Color(self.imageTemp)
         self.image = en.enhance(value)
 
     def changeBrightness(self, value):
-        en = ImageEnhance.Brightness(self.image)
+        en = ImageEnhance.Brightness(self.imageTemp)
         self.image = en.enhance(value)
     # end of section
 
@@ -68,6 +69,7 @@ class EditorEngine:
         self.image = self.image.resize(newSize)
         self.image = self.image.rotate(90)
         self.image = self.image.resize((sizeH,sizeW))
+        self.imageTemp = self.image
 
     def placeText(self, text, color='black', fontSize=40):
         if color=='black':
