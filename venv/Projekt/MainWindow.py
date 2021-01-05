@@ -508,23 +508,23 @@ class Ui_MainWindow(object):
     def saturationSlider(self):
         self.sliderCon.hide()
         self.sliderBri.hide()
-        self.sliderSat.setValue(1)
         self.editor.saveTempImage()
+        self.sliderSat.setValue(1)
         self.sliderSat.show()
 
 
     def contrastSlider(self):
         self.sliderSat.hide()
         self.sliderBri.hide()
-        self.sliderCon.setValue(1)
         self.editor.saveTempImage()
+        self.sliderCon.setValue(1)
         self.sliderCon.show()
 
     def brightnessSlider(self):
         self.sliderSat.hide()
         self.sliderCon.hide()
-        self.sliderBri.setValue(10)
         self.editor.saveTempImage()
+        self.sliderBri.setValue(10)
         self.sliderBri.show()
 
 
