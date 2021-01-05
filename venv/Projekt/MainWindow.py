@@ -513,6 +513,7 @@ class Ui_MainWindow(object):
         self.sliderSat.hide()
         self.sliderBri.hide()
         self.sliderCon.setValue(0)
+        self.editor.saveTempImage()
         self.sliderCon.show()
 
     def brightnessSlider(self):

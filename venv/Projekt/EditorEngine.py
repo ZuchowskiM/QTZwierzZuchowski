@@ -6,6 +6,7 @@ class EditorEngine:
     baseImage = None
     image = None
     imagePath = None
+    imageTemp = None
 
     def __init__(self):
         self.image = None
@@ -24,8 +25,11 @@ class EditorEngine:
          self.image = self.image.resize(newSize)
 
     # Enhance section
+    def saveTempImage(self):
+        self.imageTemp = self.image
+
     def changeContrast(self, value):
-        en = ImageEnhance.Contrast(self.image)
+        en = ImageEnhance.Contrast(self.imageTemp)
         self.image = en.enhance(value)
 
     def changeSaturation(self, value):
