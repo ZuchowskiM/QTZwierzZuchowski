@@ -1,6 +1,5 @@
 from PIL import Image, ImageFilter, ImageEnhance, ImageFont, ImageDraw
 
-
 class EditorEngine:
 
     baseImage = None
