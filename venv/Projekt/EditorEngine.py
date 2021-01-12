@@ -93,7 +93,10 @@ class EditorEngine:
         self.baseImage.show()
 
     def saveImage(self, path):
-        self.image.save(path)
+        try:
+            self.image.save(path)
+        except Exception as e:
+            raise Exception('Error reading photo')
 
     def getImage(self):
         return self.image
